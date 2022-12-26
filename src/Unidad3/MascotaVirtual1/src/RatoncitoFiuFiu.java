@@ -66,6 +66,14 @@ public class RatoncitoFiuFiu {
         }
     }
 
+    public void limpiar (float esfuerzoHigienico){
+        if (esfuerzoHigienico - suicedad <= 0){
+            suicedad = 0;
+        } else{
+            suicedad -= esfuerzoHigienico;
+        }
+    }
+
 
 
 }
