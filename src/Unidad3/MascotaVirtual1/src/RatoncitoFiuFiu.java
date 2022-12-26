@@ -44,19 +44,26 @@ public class RatoncitoFiuFiu {
         }
 
 
-        if (cantidadAlimento + energia > 100){
+        if (cantidadAlimento + energia >= 100){
             energia = 100;
         } else{
             energia += cantidadAlimento;
         }
 
 
-        if (cantidadAlimento + salud > 100){
+        if (cantidadAlimento + salud >= 100){
             salud = 100;
         } else{
             salud += cantidadAlimento;
         }
 
+    }
+    public void curar(float cantidadMedicina){
+        if (cantidadMedicina + salud >= 100){
+            salud = 100;
+        } else{
+            salud += cantidadMedicina;
+        }
     }
 
 
