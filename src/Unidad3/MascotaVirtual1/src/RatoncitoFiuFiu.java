@@ -33,15 +33,24 @@ public class RatoncitoFiuFiu {
 
     }
     public void alimentar (float cantidadAlimento){
-        hambre--;
-        if (cantidadAlimento > 5){
+        if (hambre >= 0){
+            hambre--;
+        } else {
+            hambre = 0;
+        }
+
+        if (cantidadAlimento > 5){ //suma como maximo 5 puntos
             cantidadAlimento = 5;
         }
+
+
         if (cantidadAlimento + energia > 100){
-            hambre = 100;
+            energia = 100;
         } else{
             energia += cantidadAlimento;
         }
+
+
         if (cantidadAlimento + salud > 100){
             salud = 100;
         } else{
