@@ -121,6 +121,15 @@ public class RatoncitoFiuFiu {
         return !tienesHambre() && !estasEnfermo() && !estasSucio();
     }
 
+    private void ganarPeso(float cantidad){
+        pesoEnGramos += cantidad;
+    }
+    private void aumentarEnergia(float cantidad){
+        energia += cantidad;
+    }
+    private void aumentarSalud(float cantidad){
+        salud += cantidad;
+    }
 
 
 }
