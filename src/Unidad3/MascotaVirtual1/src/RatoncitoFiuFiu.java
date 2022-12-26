@@ -74,6 +74,19 @@ public class RatoncitoFiuFiu {
         }
     }
 
+    public String estadisticas (){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Nombre: ").append(nombre);
+        sb.append("\nEdad: ").append(edad);
+        sb.append("\nPeso: ").append(pesoEnGramos);
+        sb.append("\nHambre: ").append(hambre);
+        sb.append("\nSuciedad: ").append(suicedad);
+        sb.append("\nSalud: ").append(salud);
+        sb.append("\nEnergía: ").append(energia);
+
+        return sb.toString();
+    }
+
 
 
 }
