@@ -37,7 +37,7 @@ public class RatoncitoFiuFiu {
         ganarPeso(cantidadAlimento);
 
 
-        if (hambre >= 0) {
+        if (hambre >= 0 && hambre <= 10) {
             hambre--;
         } else {
             hambre = 0;
@@ -75,7 +75,7 @@ public class RatoncitoFiuFiu {
         if (esfuerzoHigienico > 10) { //suma como maximo 10 puntos
             esfuerzoHigienico = 10;
         }
-        if (esfuerzoHigienico - suciedad <= 0) {
+        if (suciedad - esfuerzoHigienico <= 0) {
             suciedad = 0;
         } else {
             suciedad -= esfuerzoHigienico;
@@ -99,20 +99,20 @@ public class RatoncitoFiuFiu {
         edad += segundos;
 
         if (hambre < 10) {
-            hambre++;
+            hambre += 0.2; // aumenta el hambre 0.2 por segundo para que no suba tan rapido
         }
 
         if (suciedad < 100) {
             suciedad++;
         }
 
-        if (salud > 0) {
+        if (salud >= 0 && salud <= 100) {
             salud--;
         }
     }
 
     public boolean estasSucio() { //depende del nivel de suciedad
-        return suciedad < 50;
+        return suciedad > 50;
     }
 
     public boolean estasEnfermo() {//depende del nivel de salud
