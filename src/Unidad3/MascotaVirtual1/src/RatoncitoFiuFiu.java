@@ -37,7 +37,7 @@ public class RatoncitoFiuFiu {
         ganarPeso(cantidadAlimento);
 
 
-        if (hambre >= 0 && hambre <= 10) {
+        if (hambre > 0 && hambre <= 10) {
             hambre--;
         } else {
             hambre = 0;
@@ -90,7 +90,7 @@ public class RatoncitoFiuFiu {
         sb.append("\nHambre: ").append(hambre);
         sb.append("\nSuciedad: ").append(suciedad);
         sb.append("\nSalud: ").append(salud);
-        sb.append("\nEnergía: ").append(energia);
+        sb.append("\nEnergia: ").append(energia);
 
         return sb.toString();
     }
@@ -99,15 +99,19 @@ public class RatoncitoFiuFiu {
         edad += segundos;
 
         if (hambre < 10) {
-            hambre += 0.2; // aumenta el hambre 0.2 por segundo para que no suba tan rapido
+            hambre ++;
         }
 
         if (suciedad < 100) {
             suciedad++;
         }
 
-        if (salud >= 0 && salud <= 100) {
+        if (salud > 0 && salud <= 100) {
             salud--;
+        }
+
+        if (energia > 0 && energia <= 100) {
+            energia--;
         }
     }
 
