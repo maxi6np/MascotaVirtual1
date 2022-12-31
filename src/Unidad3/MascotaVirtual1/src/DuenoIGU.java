@@ -150,7 +150,7 @@ public class DuenoIGU extends JFrame {
 
     //Construir el marco
     public DuenoIGU() {
-        mascota = new RatoncitoFiuFiu("Jerry", 50, (byte) 10, (byte) 50, (byte) 50, (byte) 60);
+        mascota = new RatoncitoFiuFiu("Ratatouille", 50, (byte) 10, (byte) 50, (byte) 50, (byte) 60);
         temporizador = new Timer();
         temporizador.schedule(new Envejecimiento(mascota, labelGrafica), 0, 500);
         horaAnterior = System.currentTimeMillis();
