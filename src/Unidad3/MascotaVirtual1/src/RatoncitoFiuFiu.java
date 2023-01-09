@@ -1,5 +1,7 @@
 package Unidad3.MascotaVirtual1.src;
 
+import java.util.Random;
+
 /**
  * <p>Título: </p>
  * <p>Descripción: </p>
@@ -20,8 +22,30 @@ public class RatoncitoFiuFiu {
     private byte suciedad; // 0  (totalmente  limpio)  y  100(absolutamente inmundo
     private byte salud; // 0 (muerto) y 100 (totalmente sano)
     private byte energia; //0 (apático) a 100 (extremadamente activo)
+    private byte felicidad;
+    private boolean dormido;
+    private boolean jugando;
 
-    public RatoncitoFiuFiu(String nombre, int pesoEnGramos, byte hambre, byte suciedad, byte salud, byte energia) {
+    static Random rn = new Random();
+    private static final int INFANCIA = rn.nextInt((2600 - 2400)) + 2400; //2500;
+    private static final int ADULTA = rn.nextInt((8100 - 7900)) + 7900; //8000;
+    private static final int VEJEZ = rn.nextInt((13500 - 13300)) + 13300; //13450;
+    private static final int MIN_PESO = 5;
+    private static final int CANTIDAD_ALIMENTO_ANCIANO = 10;
+    private static final int CANTIDAD_ALIMENTO_NIÑO = 15;
+    private static final int CANTIDAD_ALIMENTO_ADULTO = 20;
+    private static final int MAXIMO_ENERGIA_DORMIR_NIÑO = 90;
+    private static final int MAXIMO_ENERGIA_DORMIR_ADULTO = 80;
+    private static final int MAXIMO_ENERGIA_DORMIR_ANCIANO = 75;
+    private static final int MINIMO_ENERGIA_DORMIR = 40;
+    private static final int RITMO_ENVEJECIMIENTO = 1;
+    private static final int ENERGIA_JUGAR = 5;
+    private static final int SALUD_ALIMENTAR = 10;
+    private static final int LIMITE_HAMBRE = 10;
+    private static final int LIMITE_SALUD = 90;
+    private static final int HAMBRE_JUGAR = 5;
+
+    public RatoncitoFiuFiu(String nombre, int pesoEnGramos, byte hambre, byte suciedad, byte salud, byte energia, byte felicidad) {
         // Un objeto RatoncitoFiuFiu debería informar cuando nace...
         this.nombre = nombre;
         this.edad = 0;
@@ -30,56 +54,12 @@ public class RatoncitoFiuFiu {
         this.suciedad = suciedad;
         this.salud = salud;
         this.energia = energia;
+        this.felicidad = felicidad;
+        dormido = false;
 
     }
-
-    public void alimentar(float cantidadAlimento) {
-        ganarPeso(cantidadAlimento);
-
-
-        if (hambre > 0 && hambre <= 10) {
-            hambre--;
-        } else {
-            hambre = 0;
-        }
-
-        if (cantidadAlimento > 5) { //suma como maximo 5 puntos
-            cantidadAlimento = 5;
-        }
-
-
-        if (cantidadAlimento + energia >= 100) {
-            energia = 100;
-        } else {
-            aumentarEnergia(cantidadAlimento);
-        }
-
-
-        if (cantidadAlimento + salud >= 100) {
-            salud = 100;
-        } else {
-            aumentarSalud(cantidadAlimento);
-        }
-
-    }
-
-    public void curar(float cantidadMedicina) {
-        if (cantidadMedicina + salud >= 100) {
-            salud = 100;
-        } else {
-            aumentarSalud(cantidadMedicina);
-        }
-    }
-
-    public void limpiar(float esfuerzoHigienico) {
-        if (esfuerzoHigienico > 10) { //suma como maximo 10 puntos
-            esfuerzoHigienico = 10;
-        }
-        if (suciedad - esfuerzoHigienico <= 0) {
-            suciedad = 0;
-        } else {
-            suciedad -= esfuerzoHigienico;
-        }
+    public void setJugar(boolean b){
+        jugando = b;
     }
 
     public String estadisticas() {
@@ -91,91 +71,221 @@ public class RatoncitoFiuFiu {
         sb.append("\nSuciedad: ").append(suciedad);
         sb.append("\nSalud: ").append(salud);
         sb.append("\nEnergia: ").append(energia);
+        sb.append("\nFelicidad: ").append(energia);
 
         return sb.toString();
     }
 
-    public void envejecer(int segundos) {
-        edad += segundos;
-
-        if (hambre < 10) {
-            hambre ++;
-        }
-
-        if (suciedad < 100) {
-            suciedad++;
-        }
-
-        if (salud > 0 && salud <= 100) {
-            salud--;
-        }
-
-        if (energia > 0 && energia <= 100) {
-            energia--;
-        }
-    }
-
-    public boolean estasSucio() { //depende del nivel de suciedad
-        return suciedad > 50;
-    }
-
-    public boolean estasEnfermo() {//depende del nivel de salud
-        return salud < 50;
-    }
-
-    public boolean estasMuerto() {//depende del nivel de salud
-        return salud == 0;
-    }
-
-    public boolean tienesHambre() {//depende del nivel de hambre
-        return hambre >= 5;
-    }
-
-    public boolean estasFeliz() {//depende del nivel de suciedad, de hambre y de salud
-        return !tienesHambre() && !estasEnfermo() && !estasSucio();
-    }
-
-    private void ganarPeso(float cantidad) {
-        if (!estasEnfermo()) {
-            pesoEnGramos += cantidad;
-        }
-    }
-
-    private void aumentarEnergia(float cantidad) {
-        energia += cantidad;
-    }
-
-    private void aumentarSalud(float cantidad) {
-        if (tienesHambre()) {
-            salud += cantidad;
-        }
-        if (!tienesHambre()) {
-            salud -= cantidad;
+    public int queTramoEdad() {
+        if (edad <= INFANCIA) {
+            return 0;
+        } else if (edad <= ADULTA) {
+            return 1;
+        } else {
+            return 2;
         }
     }
 
     public boolean estasDormido() {
-        if (energia < 50 && energia >= 0){
-            return true;
-        } else if(energia >= 50 && energia <= 100){
-            return false;
-        }
-        return false;
+        return dormido;
     }
 
+    public boolean estasEnfermo() {
+        return salud <= 20;
+    }
+
+    public boolean estasSucio() {
+        return suciedad >= 80;
+    }
+
+    public boolean tieneHambre() {
+        return hambre >= 80;
+    }
+
+    public boolean estasMuerto() {
+        return salud <= 0 || edad > VEJEZ;
+    }
+
+    public boolean estaJugando() {
+        return jugando;
+    }
+
+    /**
+     * Devuelve el atributo felicidad, que cuantifica el nivel de felicidad en vez
+     * de las necesidades de la mascota.
+     * La felicidad no varía con el tiempo en sí, sino en función de los demás atributos.
+     */
+    public boolean estasFeliz() {
+        return felicidad >= 40;
+    }
+
+    /**
+     * @return true si la mascota tiene hambre o está sucia
+     */
     public boolean tienesQuejas() {
-        return !estasFeliz();
+        return tieneHambre() || estasSucio();
     }
 
-    public int queTramoEdad() {
-        if (edad > 0 && edad <= 2.5){
-            return 0;
-        } else if (edad > 2.5 && edad <= 8.0){
-            return 1;
-        } else if (edad > 8) {
-            return 2;
-        } else{
-         return -1;
+    public void envejecer(int segundos) {
+        // EDAD
+        edad += segundos;
+        // PESO
+        ganarPeso(-RITMO_ENVEJECIMIENTO);
+        if (estasEnfermo()) {
+            ganarPeso(-RITMO_ENVEJECIMIENTO);
+        } // si está enferma pierde más peso
+        // HAMBRE
+        alimentar(-RITMO_ENVEJECIMIENTO);
+        // SUCIEDAD
+        modificarSuciedad(RITMO_ENVEJECIMIENTO);
+        // SALUD
+        aumentarSalud(-RITMO_ENVEJECIMIENTO);
+        if (estasSucio()) { // si está sucia enferma más rápido
+            aumentarSalud(-RITMO_ENVEJECIMIENTO);
+        }
+        if (queTramoEdad() == 2){
+            aumentarSalud(-RITMO_ENVEJECIMIENTO);
+        }
+        // ENERGIA
+        if (estasDormido()) {
+            aumentarEnergia(RITMO_ENVEJECIMIENTO);
+        } else {
+            aumentarEnergia(-RITMO_ENVEJECIMIENTO);
+        }
+        // FELICIDAD
+        if ((tienesQuejas() || estasEnfermo()) && estasFeliz()) { // si esta sucia o enferma no puede ser feliz
+            deprimir();
+        }
+        if (!estasDormido()) {
+            modificarFelicidad(-RITMO_ENVEJECIMIENTO);
+        }
+    }
+
+    private void deprimir() {
+        felicidad = 30;
+    }
+
+
+    public void alimentar(float cantidadAlimento) {
+        if (cantidadAlimento > 0) {
+            switch (queTramoEdad()) {
+                case 0 -> cantidadAlimento = CANTIDAD_ALIMENTO_NIÑO;
+                case 1 -> cantidadAlimento = CANTIDAD_ALIMENTO_ADULTO;
+                default -> cantidadAlimento = CANTIDAD_ALIMENTO_ANCIANO;
+            }
+        }
+        if (tieneHambre() && cantidadAlimento > 0) { // mejora su salud si come con hambre
+            aumentarSalud(SALUD_ALIMENTAR);
+        }
+
+        if (hambre - cantidadAlimento >= 0 && hambre - cantidadAlimento <= 100) {
+            hambre -= cantidadAlimento;
+        } else {
+            if (cantidadAlimento > 0) {
+                hambre = 0;
+            } else {
+                hambre = 100;
+            }
+        }
+
+        if (hambre + cantidadAlimento <= LIMITE_HAMBRE) {
+            hambre = 0;
+            if (salud > 20) {
+                salud = 20;
+            } else {
+                aumentarSalud(-5);
+            }// enferma si se empacha
+        }
+        if (!estasEnfermo()) { // solo gana peso si está sano
+            ganarPeso(1);
+        }
+    }
+
+    public void curar(float cantidadMedicina) {
+        aumentarSalud(cantidadMedicina);
+    }
+
+    public void limpiar(float esfuerzoHigienico) {
+        modificarSuciedad(-esfuerzoHigienico);
+    }
+
+    private void aumentarEnergia(float cantidad) {
+        energia += cantidad;
+        if (energia <= MINIMO_ENERGIA_DORMIR) {
+            dormido = true;
+        } else {
+            switch (queTramoEdad()) {
+                case 0:
+                    if (energia >= MAXIMO_ENERGIA_DORMIR_NIÑO) {
+                        dormido = false;
+                    }
+                    break;
+                case 1:
+                    if (energia >= MAXIMO_ENERGIA_DORMIR_ADULTO) {
+                        dormido = false;
+                    }
+                    break;
+                case 2:
+                    if (energia >= MAXIMO_ENERGIA_DORMIR_ANCIANO) {
+                        dormido = false;
+                    }
+            }
+        }
+    }
+
+    /**
+     * Incrementa o decrementa un valor random ([1-3]) para que el peso no se comporte igual que el hambre
+     *
+     * @param pn positivo o negativo (para poder ser invocado tanto desde envejecer como desde almientar)
+     */
+    private void ganarPeso(int pn) {
+        int cantidad = rn.nextInt((3 - 1) + 1) + 1;
+        if (pn > 0) {
+            pesoEnGramos += cantidad;
+        } else {
+            if (pesoEnGramos - cantidad >= MIN_PESO) {
+                pesoEnGramos -= cantidad;
+            } else {
+                pesoEnGramos = MIN_PESO;
+            }
+        }
+    }
+
+    private void aumentarSalud(float cantidad) {
+        if (salud + cantidad <= 100 && salud + cantidad >= 0) {
+            salud += cantidad;
+        } else if (salud + cantidad >= LIMITE_SALUD) {
+
+        } else {
+            if (cantidad > 0) {
+                salud = 100;
+            } else {
+                salud = 0;
+            }
+        }
+    }
+
+    private void modificarSuciedad(float cantidad) {
+        if (suciedad + cantidad <= 100 && suciedad + cantidad >= 0) {
+            suciedad += cantidad;
+        }
+    }
+
+    private void modificarFelicidad(float cantidad) {
+        if (felicidad + cantidad <= 100 && felicidad + cantidad >= 0) {
+            felicidad += cantidad;
+        }
+    }
+
+    public boolean jugar(float cantidadDiversion) {
+        if (estasDormido() || estasEnfermo()) {
+            return false;
+        } else {
+            aumentarEnergia(-ENERGIA_JUGAR);
+            alimentar(-HAMBRE_JUGAR);
+            modificarFelicidad(cantidadDiversion);
+            setJugar(true);
+            return true;
         }
     }
 }
